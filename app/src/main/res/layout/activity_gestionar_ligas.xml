@@ -8,23 +8,29 @@
     android:background="@color/backgroundWhite">
 
     <TextView
-        android:id="@+id/tvTituloMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp"
-        android:layout_marginBottom="32dp"
-        android:text="MENÚ PRINCIPAL"
+        android:id="@+id/tvTituloLigas"
+        android:text="GESTIONAR LIGAS"
+        android:textSize="26sp"
+        android:textStyle="bold"
         android:textAllCaps="true"
         android:textColor="@color/colorPrimary"
-        android:textSize="26sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="32dp"/>
 
     <Button
-        android:id="@+id/btnGestionarLigas"
-        android:text="Gestionar Ligas"
+        android:id="@+id/btnAnadirLiga"
+        android:text="Añadir Liga"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_green"
         android:textColor="@color/backgroundWhite"
         android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnVerLigas"
+        android:text="Ver Ligas Creadas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_green"
+        android:textColor="@color/backgroundWhite"/>
 
 </LinearLayout>

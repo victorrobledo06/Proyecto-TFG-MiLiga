@@ -21,7 +21,7 @@ public class BaseActivity extends AppCompatActivity {
 
         int id= item.getItemId();
         if (id==R.id.action_home){
-            startActivity(new Intent(this, MainMenuActivity.class));
+            startActivity(new Intent(this, StartActivity.class));
         }
         if (id==R.id.action_exit){
             mostrarDialogoSalida();

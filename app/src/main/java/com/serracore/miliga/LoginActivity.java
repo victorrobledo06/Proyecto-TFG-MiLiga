@@ -1,46 +1,51 @@
 package com.serracore.miliga;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.serracore.miliga.MainMenuActivity;
-import com.serracore.miliga.R;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends BaseActivity {
-
-    private EditText etUsuario, etContrasena;
-    private Button btnIniciarSesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etUsuario = findViewById(R.id.etUsuario);
-        etContrasena = findViewById(R.id.etContrasena);
-        btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
+        EditText etUsuario = findViewById(R.id.etUsuario);
+        EditText etContrasena = findViewById(R.id.etContrasena);
+        Button btnIniciar = findViewById(R.id.btnIniciarSesion);
 
-        btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnIniciar.setOnClickListener(v -> {
 
-                String user = etUsuario.getText().toString().trim();
-                String pass = etContrasena.getText().toString().trim();
+            String mail = etUsuario.getText().toString().trim();
+            String password = etContrasena.getText().toString().trim();
 
-                // Aquí puedes poner tu lógica real de login
-                if (user.equals("admin") && pass.equals("1234")) {
-                    Intent i = new Intent(LoginActivity.this, MainMenuActivity.class);
-                    startActivity(i);
-                    finish();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
-                }
+            SharedPreferences prefs = getSharedPreferences("MiLigaPrefs", MODE_PRIVATE);
+            String mailGuardado = prefs.getString("correo", "");
+            String passGuardada = prefs.getString("password", "");
+
+            if (mail.equals(mailGuardado) && password.equals(passGuardada)) {
+                startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
+                finish();
+            } else {
+                etUsuario.setError("Correo o contraseña incorrectos");
+                etContrasena.setError("Correo o contraseña incorrectos");
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences prefs = getSharedPreferences("MiLigaPrefs", MODE_PRIVATE);
+        String mailGuardado = prefs.getString("correo", "");
+
+        EditText etUsuario = findViewById(R.id.etUsuario);
+        etUsuario.setText(mailGuardado);
     }
 }

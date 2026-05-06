@@ -13,35 +13,51 @@
         android:theme="@style/Theme.MiLiga"
         tools:targetApi="31">
         <activity
-            android:name=".BaseActivity"
+            android:name=".VerLigasActivity"
             android:exported="false" />
         <activity
-            android:name=".MultimediaActivity"
+            android:name=".AnadirLigaActivity"
             android:exported="false" />
         <activity
-            android:name=".GoleadoresActivity"
-            android:exported="false" />
+            android:name=".GestionarLigasActivity"
+            android:exported="false" /> <!-- Pantalla inicial -->
         <activity
-            android:name=".ClasificacionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EquiposActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LigasActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainMenuActivity"
+            android:name=".StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Registro -->
+        <activity
+            android:name=".RegistroActivity"
+            android:exported="false" /> <!-- Inicio de sesión -->
         <activity
             android:name=".LoginActivity"
+            android:exported="false" /> <!-- Pantalla principal tras iniciar sesión -->
+        <activity
+            android:name=".MainMenuActivity"
+            android:exported="false" /> <!-- Otras pantallas de gestión -->
+        <activity
+            android:name=".LigasActivity"
             android:exported="false" />
+        <activity
+            android:name=".EquiposActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClasificacionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GoleadoresActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MultimediaActivity"
+            android:exported="false" /> <!-- BaseActivity no debe declararse como Activity visible -->
+        <activity
+            android:name=".BaseActivity"
+            android:exported="false"
+            tools:node="remove" />
     </application>
 
 </manifest>
