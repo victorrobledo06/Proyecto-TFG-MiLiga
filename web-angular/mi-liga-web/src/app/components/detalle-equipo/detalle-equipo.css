@@ -1,0 +1,89 @@
+.equipo-header {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  background: linear-gradient(90deg, #1e293b 0%, #0f172a 100%);
+  padding: 30px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  border: 1px solid #334155;
+}
+
+.escudo-placeholder { font-size: 3rem; }
+.equipo-info h1 { margin: 0; color: #22c55e; }
+.stats-resumen { color: #94a3b8; margin-top: 5px; }
+
+.section-card {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+  border: 1px solid #334155;
+}
+
+.tabla-stats { width: 100%; border-collapse: collapse; margin-top: 15px; }
+.tabla-stats th { text-align: left; color: #94a3b8; padding: 10px; font-size: 0.8rem; }
+.tabla-stats td { padding: 12px 10px; border-bottom: 1px solid #334155; color: white; }
+
+.pos-tag { font-size: 0.75rem; color: #22c55e; text-transform: uppercase; }
+.goal-count { font-weight: bold; color: #22c55e; }
+.red-text { color: #ef4444; }
+
+.partido-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #334155;
+}
+
+.current { font-weight: bold; color: #22c55e; }
+.mini-score { background: #0f172a; padding: 2px 12px; border-radius: 4px; font-weight: bold; }
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+  color: #94a3b8;
+  border: 1px solid #334155;
+  padding: 8px 16px;
+  border-radius: 50px; /* Estilo píldora */
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.btn-back .icon {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.btn-back:hover {
+  background: #22c55e; /* Cambia a verde fútbol */
+  color: white;
+  border-color: #22c55e;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.btn-back:hover .icon {
+  transform: translateX(-4px); /* Pequeña animación de la flecha */
+}
+
+/* Ajuste para el header si el botón está dentro */
+.equipo-header {
+  display: flex;
+  flex-direction: column; /* Botón arriba, info abajo */
+  gap: 20px;
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid #334155;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}

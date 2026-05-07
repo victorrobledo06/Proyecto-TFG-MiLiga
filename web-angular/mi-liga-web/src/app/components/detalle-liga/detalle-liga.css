@@ -1,0 +1,137 @@
+.container { padding: 40px; color: white; }
+.header-detalle { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
+.btn-back { background: #334155; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; }
+
+.tabla-clasificacion {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+th, td { padding: 15px; text-align: left; border-bottom: 1px solid #334155; }
+th { background: #0f172a; color: #22c55e; text-transform: uppercase; font-size: 0.8rem; }
+.team-name { font-weight: bold; }
+.pts-col { color: #22c55e; font-weight: bold; }
+tr:hover { background: #2d3a4f; }
+.resultados-section { margin-top: 40px; }
+
+.partidos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.partido-card {
+  background: #0f172a;
+  padding: 15px 25px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  border: 1px solid #1e293b;
+}
+
+.equipo { flex: 1; font-weight: 500; }
+.equipo:first-child { text-align: right; }
+
+.marcador {
+  background: #22c55e;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  min-width: 50px;
+  text-align: center;
+}
+
+.vs { background: #334155; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; }
+.marcador-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-sm {
+  background: #334155;
+  color: #22c55e;
+  border: 1px solid #22c55e;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.btn-sm:hover {
+  background: #22c55e;
+  color: white;
+}
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.stats-table {
+  background: #1e293b;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  overflow: hidden;
+}
+
+.stats-header {
+  background: #0f172a;
+  padding: 12px 15px;
+  display: flex;
+  justify-content: space-between;
+  color: #22c55e;
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid #334155;
+  color: white;
+}
+
+.stats-row small { color: #94a3b8; margin-left: 5px; }
+
+.badge-count {
+  background: #064e3b;
+  color: #22c55e;
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.badge-count.assist { color: #60a5fa; background: #1e3a8a; }
+.link-equipo {
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.link-equipo:hover {
+  color: #22c55e; /* Color verde al pasar el ratón */
+  text-decoration: underline;
+}
+
+/* Para que el marcador resalte que se puede clicar */
+.marcador:hover {
+  filter: brightness(1.2);
+  transform: scale(1.05);
+  transition: 0.2s;
+}

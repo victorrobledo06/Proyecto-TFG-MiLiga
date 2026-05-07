@@ -1,0 +1,141 @@
+/* ESTILOS GLOBALES */
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #0f172a; /* Un tono oscuro más moderno que el negro puro */
+  color: white;
+  margin: 0;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 90%;
+  padding: 20px;
+}
+
+/* BARRA DE NAVEGACIÓN PRINCIPAL */
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10%;
+  height: 70px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px); /* Efecto de cristal esmerilado */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #1e293b;
+}
+
+/* EL LOGO (MiLiga) */
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo-text {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  /* Gradiente moderno en verde */
+  background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+}
+
+/* El balón pequeño junto al texto */
+.logo::before {
+  content: '⚽';
+  font-size: 1.4rem;
+  margin-right: 8px;
+  filter: drop-shadow(0 0 5px rgba(34, 197, 94, 0.4));
+}
+
+/* ENLACES DE NAVEGACIÓN */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+nav a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+nav a:hover, nav a.active {
+  color: #22c55e;
+}
+
+/* BOTÓN DE INICIO DE SESIÓN */
+.btn-login {
+  background: #22c55e;
+  color: #0f172a;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.btn-login:hover {
+  background: #4ade80;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribuye Logo - Menú - Espacio */
+  padding: 0 50px;
+  height: 80px;
+  background-color: #0f172a; /* Tu color oscuro actual */
+  border-bottom: 1px solid #1e293b;
+}
+
+/* 1. El Logo a la izquierda */
+.logo {
+  flex: 1; /* Ocupa 1 parte del espacio */
+  display: flex;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* 2. El Menú en el CENTRO */
+.menu {
+  flex: 2; /* Ocupa más espacio para poder centrar el contenido dentro */
+  display: flex;
+  justify-content: center; 
+  gap: 30px;
+}
+
+/* 3. Espaciador invisible a la derecha */
+/* Esto compensa el tamaño del logo para que el centro sea real */
+.main-nav::after {
+  content: "";
+  flex: 1; 
+}
+
+/* Estilos de los enlaces */
+.menu a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 10px 15px;
+}
+
+.menu a:hover, .menu a.active {
+  color: #22c55e; /* Tu verde esmeralda */
+}

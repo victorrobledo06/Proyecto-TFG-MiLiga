@@ -1,0 +1,10 @@
+<div class="registro-card">
+  <h2>Crear Cuenta en MiLiga</h2>
+  <form [formGroup]="registroForm" (ngSubmit)="enviar()">
+    <input type="text" formControlName="nombre" placeholder="Nombre">
+    <input type="email" formControlName="email" placeholder="Correo Electrónico">
+    <input type="password" formControlName="password" placeholder="Contraseña">
+    
+    <button type="submit" [disabled]="registroForm.invalid">Registrarse</button>
+  </form>
+</div>

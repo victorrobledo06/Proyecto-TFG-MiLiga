@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="header-section">
+    <div class="header-text">
+      <h2>Ligas Universitarias Disponibles</h2>
+      <p>Consulta los datos reales desde AWS.</p>
+    </div>
+    
+    <div class="app-promo-card">
+      <p>🏆 ¿Quieres organizar tu propia competición?</p>
+      <p class="promo-text">Para crear ligas y gestionar equipos, <strong>descarga nuestra aplicación oficial</strong>.</p>
+      <span class="badge-pro">Disponoble en App Store y Google Play</span>
+    </div>
+  </div>
+
+  <div class="search-section">
+    <div class="search-container">
+      <input 
+        type="text" 
+        placeholder="🔍 Buscar por nombre..." 
+        (input)="actualizarBusqueda($event)"
+        class="search-input"
+      >
+    </div>
+  </div>
+
+  <div class="ligas-grid">
+    @for (liga of ligasFiltradas(); track liga.id) {
+      <div class="liga-card">
+        <div class="card-header">
+          <span class="universidad-tag">{{ liga.temporada }}</span>
+          <span class="status-badge active">En curso</span>
+        </div>
+        
+        <h3>{{ liga.nombre }}</h3>
+        
+        <div class="card-body">
+          <p><strong>ID:</strong> {{ liga.id }}</p>
+        </div>
+
+        <button class="btn-detalle" [routerLink]="['/ligas', liga.id]">
+          Ver Clasificación
+        </button>
+      </div>
+    } @empty {
+      <div class="no-results">
+        <p>No se encontraron ligas con ese nombre.</p>
+      </div>
+    }
+  </div>
+</div>
