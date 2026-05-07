@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MiLiga"
+        tools:targetApi="31">
+        <activity
+            android:name=".PartidosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".JugadoresActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GestionarActivity"
+            android:exported="false" /> <!-- START ACTIVITY (LA PRINCIPAL) -->
+        <activity
+            android:name=".StartActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- RESTO -->
+        <activity
+            android:name=".RegistroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LigasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EquiposLigaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ClasificacionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GoleadoresActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GestionarActivity"
+            android:exported="false"
+            tools:ignore="DuplicateActivity" />
+    </application>
+
+</manifest>

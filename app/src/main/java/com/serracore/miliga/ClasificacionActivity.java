@@ -1,0 +1,12 @@
+package com.serracore.miliga;
+
+import android.os.Bundle;
+
+public class ClasificacionActivity extends MenuActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_clasificacion);
+    }
+}

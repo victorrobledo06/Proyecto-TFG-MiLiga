@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundWhite">
+
+    <TextView
+        android:text="Gestión de Liga"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/etNombreEquipo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del equipo"
+        android:layout_marginBottom="12dp"/>
+
+    <Button
+        android:id="@+id/btnGuardarEquipo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Añadir equipo"
+        android:background="@drawable/btn_green"
+        android:textColor="@color/backgroundWhite"/>
+
+    <!-- ✅ BOTÓN NUEVO -->
+    <Button
+        android:id="@+id/btnIrPartidos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gestionar Partidos"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/btn_green"
+        android:textColor="@color/backgroundWhite"/>
+
+    <ListView
+        android:id="@+id/listEquipos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

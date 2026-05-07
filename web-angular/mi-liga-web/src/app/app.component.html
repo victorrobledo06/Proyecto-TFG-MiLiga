@@ -1,0 +1,16 @@
+<header class="main-nav">
+  <div class="logo" routerLink="/">
+    <span class="logo-mi">Mi</span><span class="logo-liga">Liga</span>
+  </div>
+
+  <nav class="menu">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+    <a routerLink="/ligas" routerLinkActive="active">Ligas</a>
+    <a routerLink="/noticias" routerLinkActive="active">Noticias</a>
+
+  </nav>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>

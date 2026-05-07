@@ -1,0 +1,83 @@
+<div class="container">
+  <div class="equipo-header">
+    <div class="header-top">
+      <button routerLink="/ligas" class="btn-back">
+        <span class="icon">←</span> Volver al listado
+      </button>
+    </div>
+    
+    <div class="header-main">
+      <div class="escudo-placeholder">🛡️</div>
+      <div class="equipo-info">
+        <h1>{{ nombreEquipo() }}</h1>
+        <div class="stats-badges">
+          <span class="badge-pts">Puntos: 25</span>
+          <span class="badge-pos">Posición: 1º</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section-card">
+    <div class="section-header">
+      <h3>📋 Plantilla de Jugadores</h3>
+      <p class="subtitle">Estadísticas individuales acumuladas en la liga.</p>
+    </div>
+    
+    <div class="table-container">
+      <table class="tabla-stats">
+        <thead>
+          <tr>
+            <th>Jugador</th>
+            <th>Pos</th>
+            <th>⚽ Goles</th>
+            <th>👟 Asist.</th>
+            <th>🟨</th>
+            <th>🟥</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (j of plantilla; track j.id) {
+            <tr>
+              <td><strong>{{ j.nombre }}</strong></td>
+              <td><span class="pos-tag">{{ j.posicion }}</span></td>
+              <td class="goal-count">{{ j.goles }}</td>
+              <td class="assist-count">{{ j.asistencias }}</td>
+              <td class="yellow-card-cell">{{ j.amarillas }}</td>
+              <td class="red-card-cell">{{ j.rojas }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section-card">
+    <div class="section-header">
+      <h3>📅 Partidos del Equipo</h3>
+      <p class="subtitle">Historial de encuentros y próximos enfrentamientos.</p>
+    </div>
+
+    <div class="partidos-list">
+      @for (p of getPartidosEquipo(); track p.id) {
+        <div class="partido-item">
+          <div class="equipo-name local" [class.current]="p.localId === equipoId()">
+            {{ p.local }}
+          </div>
+          
+          <div class="score-container">
+            <div class="mini-score">
+              {{ p.jugado ? p.golesLocal + ' - ' + p.golesVisitante : 'vs' }}
+            </div>
+          </div>
+
+          <div class="equipo-name visitante" [class.current]="p.visitanteId === equipoId()">
+            {{ p.visitante }}
+          </div>
+        </div>
+      } @empty {
+        <div class="no-data">No hay partidos registrados para este equipo.</div>
+      }
+    </div>
+  </section>
+</div>

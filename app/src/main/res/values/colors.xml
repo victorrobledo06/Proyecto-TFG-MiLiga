@@ -1,0 +1,14 @@
+<resources>
+    <color name="colorPrimary">#2E7D32</color>
+    <color name="colorPrimaryDark">#1B5E20</color>
+    <color name="colorAccent">#4CAF50</color>
+
+    <color name="backgroundWhite">#FFFFFF</color>
+    <color name="textPrimary">#000000</color>
+    <color name="textSecondary">#444444</color>
+
+    <color name="buttonGreen">#4CAF50</color>
+    <color name="buttonGreenPressed">#388E3C</color>
+
+    <color name="dividerGray">#DDDDDD</color>
+</resources>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="Goleadores"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1">
+
+        <TableRow>
+            <TextView
+                android:text="Jugador"
+                android:textStyle="bold"
+                android:padding="8dp"/>
+            <TextView
+                android:text="Goles"
+                android:textStyle="bold"
+                android:padding="8dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="Carlos Pérez"
+                android:padding="8dp"/>
+            <TextView
+                android:text="12"
+                android:padding="8dp"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:text="Luis Gómez"
+                android:padding="8dp"/>
+            <TextView
+                android:text="8"
+                android:padding="8dp"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/btnAnadirGoleador"
+        android:text="+ Añadir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/btn_green"
+        android:textColor="@color/backgroundWhite"
+        />
+
+</LinearLayout>

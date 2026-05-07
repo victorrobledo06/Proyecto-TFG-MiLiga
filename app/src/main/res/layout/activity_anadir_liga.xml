@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@color/backgroundWhite">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="AÑADIR LIGA"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- NOMBRE -->
+        <EditText
+            android:id="@+id/etNombreLiga"
+            android:hint="Nombre de la liga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- DESCRIPCIÓN -->
+        <EditText
+            android:id="@+id/etDescripcionLiga"
+            android:hint="Descripción"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="3"
+            android:gravity="top"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- MÁXIMOS GOLEADORES -->
+        <EditText
+            android:id="@+id/etGoleadores"
+            android:hint="Máximos goleadores (se añadirán después)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="2"
+            android:gravity="top"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- MÁXIMOS ASISTENTES -->
+        <EditText
+            android:id="@+id/etAsistentes"
+            android:hint="Máximos asistentes (se añadirán después)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="2"
+            android:gravity="top"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- RESULTADOS -->
+        <EditText
+            android:id="@+id/etResultados"
+            android:hint="Resultados (se añadirán después)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="2"
+            android:gravity="top"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- EQUIPOS -->
+        <EditText
+            android:id="@+id/etEquipos"
+            android:hint="Equipos (se añadirán después)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="2"
+            android:gravity="top"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- BOTÓN GUARDAR -->
+        <Button
+            android:id="@+id/btnGuardarLiga"
+            android:text="Guardar Liga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_green"
+            android:textColor="@color/backgroundWhite"/>
+    </LinearLayout>
+
+</ScrollView>

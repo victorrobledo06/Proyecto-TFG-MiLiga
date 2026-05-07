@@ -1,0 +1,66 @@
+<div class="container">
+  <button routerLink="/ligas" class="btn-back">
+    <span class="icon">←</span> Volver a la Liga
+  </button>
+
+  <div class="match-header">
+    <div class="team-block">
+      <div class="shield-big">🛡️</div>
+      <h2>{{ partido.local }}</h2>
+    </div>
+
+    <div class="score-block">
+      <div class="score-display">
+        <span class="score-num">{{ partido.golesL }}</span>
+        <span class="score-divider">-</span>
+        <span class="score-num">{{ partido.golesV }}</span>
+      </div>
+      <div class="match-info">
+        <p>{{ partido.fecha }} | {{ partido.hora }}</p>
+        <p class="stadium">{{ partido.campo }}</p>
+      </div>
+    </div>
+
+    <div class="team-block">
+      <div class="shield-big">🛡️</div>
+      <h2>{{ partido.visitante }}</h2>
+    </div>
+  </div>
+
+  <section class="section-card">
+    <h3>⏱️ Cronología del Encuentro</h3>
+    <div class="timeline">
+      @for (e of partido.eventos; track e.min) {
+        <div class="event-row" [class.event-right]="e.equipo === 'visitante'">
+          <div class="event-content">
+            <span class="event-min">{{ e.min }}'</span>
+            <span class="event-icon">
+              {{ e.tipo === 'gol' ? '⚽' : (e.color === 'amarilla' ? '🟨' : '🟥') }}
+            </span>
+            <span class="event-player">{{ e.jugador }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <div class="alineaciones-grid">
+    <section class="section-card">
+      <h3>📋 {{ partido.local }} (7 inicial)</h3>
+      <ul class="player-list">
+        @for (p of partido.alineacionLocal; track p) {
+          <li><span class="dot"></span> {{ p }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="section-card">
+      <h3>📋 {{ partido.visitante }} (7 inicial)</h3>
+      <ul class="player-list">
+        @for (p of partido.alineacionVisitante; track p) {
+          <li><span class="dot"></span> {{ p }}</li>
+        }
+      </ul>
+    </section>
+  </div>
+</div>
