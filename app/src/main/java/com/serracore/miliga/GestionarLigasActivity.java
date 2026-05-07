@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-public class GestionarLigasActivity extends BaseActivity {
+public class GestionarLigasActivity extends MenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

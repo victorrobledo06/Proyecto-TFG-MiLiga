@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public class MainMenuActivity extends MenuActivity {
 
     private Button btnGestionarLigas, btnVerLigas;
@@ -18,11 +16,11 @@ public class MainMenuActivity extends MenuActivity {
         btnGestionarLigas = findViewById(R.id.btnGestionarLigas);
         btnVerLigas = findViewById(R.id.btnVerLigas);
 
-        // Ir a crear ligas
+        // Crear ligas
         btnGestionarLigas.setOnClickListener(v ->
                 startActivity(new Intent(this, GestionarActivity.class)));
 
-        // Ver ligas existentes
+        // Ver ligas
         btnVerLigas.setOnClickListener(v ->
                 startActivity(new Intent(this, LigasActivity.class)));
     }
