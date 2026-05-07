@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "584106823197",
+    "project_id": "miliga-c210e",
+    "storage_bucket": "miliga-c210e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584106823197:android:a1aeb51f669105ae7800f4",
+        "android_client_info": {
+          "package_name": "com.serracore.miliga"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3XWJ0dY4pPcqI3cJBo4mqoKrJqZh2bPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

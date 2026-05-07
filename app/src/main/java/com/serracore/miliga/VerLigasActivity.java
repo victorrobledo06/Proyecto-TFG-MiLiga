@@ -8,7 +8,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class VerLigasActivity extends BaseActivity {
+public class VerLigasActivity extends MenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

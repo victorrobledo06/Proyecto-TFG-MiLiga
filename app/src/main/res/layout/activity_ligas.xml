@@ -3,41 +3,29 @@
     android:orientation="vertical"
     android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundWhite">
 
     <TextView
-        android:text="MiLiga"
+        android:text="Ligas"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:layout_marginBottom="12dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="wrap_content"/>
 
-    <TextView
-        android:text="Ligas Universitarias"
-        android:textSize="18sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"/>
-
+    <!-- ✅ BOTÓN NUEVO -->
     <Button
-        android:id="@+id/btnLigaA"
-        android:text="Liga A"
+        android:id="@+id/btnVerPartidos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Ver Partidos de la Liga Seleccionada"
         android:layout_marginBottom="12dp"
         android:background="@drawable/btn_green"
-        android:textColor="@color/backgroundWhite"
-        />
+        android:textColor="@color/backgroundWhite"/>
 
-    <Button
-        android:id="@+id/btnLigaB"
-        android:text="Liga B"
+    <ListView
+        android:id="@+id/listLigas"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_green"
-        android:textColor="@color/backgroundWhite"
-        />
-
+        android:layout_height="match_parent"/>
 </LinearLayout>

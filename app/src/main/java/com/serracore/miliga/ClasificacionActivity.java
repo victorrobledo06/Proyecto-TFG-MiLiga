@@ -1,9 +1,8 @@
 package com.serracore.miliga;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class ClasificacionActivity extends BaseActivity {
+public class ClasificacionActivity extends MenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

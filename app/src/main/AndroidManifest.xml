@@ -13,14 +13,14 @@
         android:theme="@style/Theme.MiLiga"
         tools:targetApi="31">
         <activity
-            android:name=".VerLigasActivity"
+            android:name=".PartidosActivity"
             android:exported="false" />
         <activity
-            android:name=".AnadirLigaActivity"
+            android:name=".JugadoresActivity"
             android:exported="false" />
         <activity
-            android:name=".GestionarLigasActivity"
-            android:exported="false" /> <!-- Pantalla inicial -->
+            android:name=".GestionarActivity"
+            android:exported="false" /> <!-- START ACTIVITY (LA PRINCIPAL) -->
         <activity
             android:name=".StartActivity"
             android:exported="true">
@@ -29,21 +29,21 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Registro -->
+        </activity> <!-- RESTO -->
         <activity
             android:name=".RegistroActivity"
-            android:exported="false" /> <!-- Inicio de sesión -->
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false" /> <!-- Pantalla principal tras iniciar sesión -->
+            android:exported="false" />
         <activity
             android:name=".MainMenuActivity"
-            android:exported="false" /> <!-- Otras pantallas de gestión -->
+            android:exported="false" />
         <activity
             android:name=".LigasActivity"
             android:exported="false" />
         <activity
-            android:name=".EquiposActivity"
+            android:name=".EquiposLigaActivity"
             android:exported="false" />
         <activity
             android:name=".ClasificacionActivity"
@@ -52,12 +52,9 @@
             android:name=".GoleadoresActivity"
             android:exported="false" />
         <activity
-            android:name=".MultimediaActivity"
-            android:exported="false" /> <!-- BaseActivity no debe declararse como Activity visible -->
-        <activity
-            android:name=".BaseActivity"
+            android:name=".GestionarActivity"
             android:exported="false"
-            tools:node="remove" />
+            tools:ignore="DuplicateActivity" />
     </application>
 
 </manifest>

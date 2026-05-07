@@ -1,11 +1,10 @@
 package com.serracore.miliga;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class GoleadoresActivity extends BaseActivity {
+public class GoleadoresActivity extends MenuActivity {
 
     private Button btnAnadirGoleador;
 

@@ -6,11 +6,20 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class StartActivity extends BaseActivity {
+import com.google.firebase.auth.FirebaseAuth;
+
+public class StartActivity extends MenuActivity {
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        //
+
         setContentView(R.layout.activity_start);
 
         Button btnLogin = findViewById(R.id.btnIrLogin);

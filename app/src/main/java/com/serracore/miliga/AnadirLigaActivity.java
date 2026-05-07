@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AnadirLigaActivity extends BaseActivity {
+public class AnadirLigaActivity extends MenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

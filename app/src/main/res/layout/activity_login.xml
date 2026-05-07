@@ -19,7 +19,7 @@
 
     <EditText
         android:id="@+id/etUsuario"
-        android:hint="Usuario"
+        android:hint="Correo electrónico"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"

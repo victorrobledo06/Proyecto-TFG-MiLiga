@@ -1,51 +1,64 @@
 package com.serracore.miliga;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends BaseActivity {
+import com.google.firebase.auth.FirebaseAuth;
+
+public class LoginActivity extends MenuActivity {
+
+    private EditText etUsuario, etContrasena;
+    private Button btnIniciarSesion;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        EditText etUsuario = findViewById(R.id.etUsuario);
-        EditText etContrasena = findViewById(R.id.etContrasena);
-        Button btnIniciar = findViewById(R.id.btnIniciarSesion);
+        etUsuario = findViewById(R.id.etUsuario);
+        etContrasena = findViewById(R.id.etContrasena);
+        btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
 
-        btnIniciar.setOnClickListener(v -> {
+        mAuth = FirebaseAuth.getInstance();
 
-            String mail = etUsuario.getText().toString().trim();
-            String password = etContrasena.getText().toString().trim();
+        //  Recibir email desde registro
+        String email = getIntent().getStringExtra("email");
+        if (email != null) {
+            etUsuario.setText(email);
+        }
 
-            SharedPreferences prefs = getSharedPreferences("MiLigaPrefs", MODE_PRIVATE);
-            String mailGuardado = prefs.getString("correo", "");
-            String passGuardada = prefs.getString("password", "");
+        btnIniciarSesion.setOnClickListener(v -> {
 
-            if (mail.equals(mailGuardado) && password.equals(passGuardada)) {
-                startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
-                finish();
-            } else {
-                etUsuario.setError("Correo o contraseña incorrectos");
-                etContrasena.setError("Correo o contraseña incorrectos");
+            String user = etUsuario.getText().toString().trim();
+            String pass = etContrasena.getText().toString().trim();
+
+            if (user.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            mAuth.signInWithEmailAndPassword(user, pass)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+
+                            Toast.makeText(this, "Login correcto", Toast.LENGTH_SHORT).show();
+
+                            startActivity(new Intent(this, MainMenuActivity.class));
+                            finish();
+
+                        } else {
+                            Toast.makeText(this,
+                                    "Error: " + task.getException().getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        SharedPreferences prefs = getSharedPreferences("MiLigaPrefs", MODE_PRIVATE);
-        String mailGuardado = prefs.getString("correo", "");
-
-        EditText etUsuario = findViewById(R.id.etUsuario);
-        etUsuario.setText(mailGuardado);
     }
 }
