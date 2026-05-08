@@ -26,6 +26,8 @@ public class PartidosActivity extends MenuActivity {
     private ArrayList<String> rojas = new ArrayList<>();
 
     private String idLiga;
+    private EditText etJornada;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +48,17 @@ public class PartidosActivity extends MenuActivity {
         btnAddAmarilla = findViewById(R.id.btnAddAmarilla);
         btnAddRoja = findViewById(R.id.btnAddRoja);
 
+        etJornada = findViewById(R.id.etJornada);
+
+
         idLiga = getIntent().getStringExtra("idLiga");
 
         cargarDatos();
 
-        btnAddGol.setOnClickListener(v -> agregarEvento(goles, "Gol"));
-        btnAddAsistencia.setOnClickListener(v -> agregarEvento(asistencias, "Asistencia"));
-        btnAddAmarilla.setOnClickListener(v -> agregarEvento(amarillas, "Amarilla"));
-        btnAddRoja.setOnClickListener(v -> agregarEvento(rojas, "Roja"));
+        btnAddGol.setOnClickListener(v -> agregarEvento(goles, "⚽ Gol"));
+        btnAddAsistencia.setOnClickListener(v -> agregarEvento(asistencias, "🎯 Asistencia"));
+        btnAddAmarilla.setOnClickListener(v -> agregarEvento(amarillas, "🟨 Amarilla"));
+        btnAddRoja.setOnClickListener(v -> agregarEvento(rojas, "🟥 Roja"));
 
         btnGuardarPartido.setOnClickListener(v -> guardarPartido());
     }
@@ -67,43 +72,79 @@ public class PartidosActivity extends MenuActivity {
         }
 
         lista.add(jugador);
-        Toast.makeText(this, tipo + " añadido: " + jugador, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, tipo + " ✅ " + jugador, Toast.LENGTH_SHORT).show();
+
     }
 
     private void guardarPartido() {
 
-        String local = spinnerLocal.getSelectedItem().toString();
-        String visitante = spinnerVisitante.getSelectedItem().toString();
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Confirmar")
+                .setMessage("¿Quieres guardar este partido?")
+                .setPositiveButton("Sí", (dialog, which) -> {
 
-        String golesL = etGolesLocal.getText().toString();
-        String golesV = etGolesVisitante.getText().toString();
+                    String local = spinnerLocal.getSelectedItem().toString();
+                    String visitante = spinnerVisitante.getSelectedItem().toString();
 
-        String id = FirebaseDatabase.getInstance()
-                .getReference("ligas")
-                .child(idLiga)
-                .child("partidos")
-                .push().getKey();
+                    String golesL = etGolesLocal.getText().toString();
+                    String golesV = etGolesVisitante.getText().toString();
+                    String jornada = etJornada.getText().toString();
 
-        HashMap<String, Object> partido = new HashMap<>();
-        partido.put("equipoLocal", local);
-        partido.put("equipoVisitante", visitante);
-        partido.put("golesLocal", golesL);
-        partido.put("golesVisitante", golesV);
+                    // ✅ VALIDACIONES
+                    if (local.equals(visitante)) {
+                        Toast.makeText(this, "Los equipos no pueden ser iguales", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-        partido.put("goles", goles);
-        partido.put("asistencias", asistencias);
-        partido.put("amarillas", amarillas);
-        partido.put("rojas", rojas);
-        partido.put("jornada", "1");
+                    if (golesL.isEmpty() || golesV.isEmpty()) {
+                        Toast.makeText(this, "Introduce los goles", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-        FirebaseDatabase.getInstance()
-                .getReference("ligas")
-                .child(idLiga)
-                .child("partidos")
-                .child(id)
-                .setValue(partido);
+                    if (jornada.isEmpty()) {
+                        Toast.makeText(this, "Introduce la jornada", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-        Toast.makeText(this, "Partido guardado", Toast.LENGTH_SHORT).show();
+                    String id = FirebaseDatabase.getInstance()
+                            .getReference("ligas")
+                            .child(idLiga)
+                            .child("partidos")
+                            .push().getKey();
+
+                    HashMap<String, Object> partido = new HashMap<>();
+                    partido.put("equipoLocal", local);
+                    partido.put("equipoVisitante", visitante);
+                    partido.put("golesLocal", golesL);
+                    partido.put("golesVisitante", golesV);
+                    partido.put("jornada", jornada); // ✅ CLAVE
+
+                    partido.put("goles", goles);
+                    partido.put("asistencias", asistencias);
+                    partido.put("amarillas", amarillas);
+                    partido.put("rojas", rojas);
+
+                    FirebaseDatabase.getInstance()
+                            .getReference("ligas")
+                            .child(idLiga)
+                            .child("partidos")
+                            .child(id)
+                            .setValue(partido);
+
+                    Toast.makeText(this, "✅ Partido guardado", Toast.LENGTH_SHORT).show();
+
+                    // ✅ LIMPIAR
+                    etGolesLocal.setText("");
+                    etGolesVisitante.setText("");
+                    etJornada.setText("");   // 🔥
+
+                    goles.clear();
+                    asistencias.clear();
+                    amarillas.clear();
+                    rojas.clear();
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 
     private void cargarDatos() {

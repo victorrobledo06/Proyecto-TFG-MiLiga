@@ -6,6 +6,7 @@ import android.widget.ListView;
 
 import com.google.firebase.database.*;
 
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -54,6 +55,11 @@ public class ResultadosActivity extends MenuActivity {
 
                             String jornada = partido.child("jornada").getValue(String.class);
 
+                            if (jornada == null) {
+                                jornada = "0";  // o "Sin jornada"
+                            }
+
+
                             String local = partido.child("equipoLocal").getValue(String.class);
                             String visitante = partido.child("equipoVisitante").getValue(String.class);
 
@@ -70,7 +76,15 @@ public class ResultadosActivity extends MenuActivity {
                         }
 
                         // Mostrar
-                        for (String jornada : jornadas.keySet()) {
+                        ArrayList<String> ordenadas = new ArrayList<>(jornadas.keySet());
+                        Collections.sort(ordenadas, (a, b) -> {
+                            if (a == null) return 1;
+                            if (b == null) return -1;
+                            return a.compareTo(b);
+                        });
+
+
+                        for (String jornada : ordenadas) {
 
                             lista.add("📅 Jornada " + jornada);
 
