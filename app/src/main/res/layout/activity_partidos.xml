@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/backgroundWhite">
 
+        <!-- EQUIPOS -->
         <Spinner
             android:id="@+id/spinnerLocal"
             android:layout_width="match_parent"
@@ -20,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <!-- GOLES -->
         <EditText
             android:id="@+id/etGolesLocal"
             android:hint="Goles local"
@@ -34,43 +36,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <!-- 🔥 NUEVO -->
-        <EditText
-            android:id="@+id/etGoleador"
-            android:hint="Goleador"
+        <!-- SELECCIÓN DE JUGADOR -->
+        <TextView
+            android:text="Selecciona jugador"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/etAsistente"
-            android:hint="Asistente"
+        <Spinner
+            android:id="@+id/spinnerJugador"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/etAmarilla"
-            android:hint="Amarilla"
+        <!-- BOTONES EVENTOS -->
+        <Button
+            android:id="@+id/btnAddGol"
+            android:text="+ Añadir gol"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
 
-        <EditText
-            android:id="@+id/etRoja"
-            android:hint="Roja"
+        <Button
+            android:id="@+id/btnAddAsistencia"
+            android:text="+ Añadir asistencia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Button
+            android:id="@+id/btnAddAmarilla"
+            android:text="+ Añadir amarilla"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btnAddRoja"
+            android:text="+ Añadir roja"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- GUARDAR -->
+        <Button
             android:id="@+id/btnGuardarPartido"
-            android:text="Guardar partido"
+            android:text="Guardar Partido"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:background="@drawable/btn_green"
             android:textColor="@color/backgroundWhite"/>
 
-        <ListView
-            android:id="@+id/listPartidos"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"/>
     </LinearLayout>
-
 </ScrollView>

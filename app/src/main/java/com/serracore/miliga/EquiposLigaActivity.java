@@ -124,5 +124,29 @@ public class EquiposLigaActivity extends MenuActivity {
             intent.putExtra("idLiga", idLiga);
             startActivity(intent);
         });
+
+        Button btnEstadisticas = findViewById(R.id.btnEstadisticas);
+
+        btnEstadisticas.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EstadisticasActivity.class);
+            intent.putExtra("idLiga", idLiga);
+            startActivity(intent);
+        });
+        Button btnResultados = findViewById(R.id.btnResultados);
+
+        btnResultados.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ResultadosActivity.class);
+            intent.putExtra("idLiga", idLiga);
+            startActivity(intent);
+        });
+
+        Button btnClasificacion = findViewById(R.id.btnClasificacion);
+
+        btnClasificacion.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ClasificacionActivity.class);
+            intent.putExtra("idLiga", idLiga);
+            startActivity(intent);
+        });
+
     }
 }

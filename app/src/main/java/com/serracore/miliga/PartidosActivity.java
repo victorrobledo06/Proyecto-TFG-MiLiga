@@ -10,14 +10,20 @@ import java.util.HashMap;
 
 public class PartidosActivity extends MenuActivity {
 
-    private Spinner spinnerLocal, spinnerVisitante;
-    private EditText etGolesLocal, etGolesVisitante;
-    private EditText etGoleador, etAsistente, etAmarilla, etRoja;
-    private Button btnGuardarPartido;
-    private ListView listPartidos;
+    private Spinner spinnerLocal, spinnerVisitante, spinnerJugador;
 
-    private ArrayList<String> equipos, partidos;
-    private ArrayAdapter<String> adapterEquipos, adapterPartidos;
+    private EditText etGolesLocal, etGolesVisitante;
+    private Button btnGuardarPartido;
+
+    private Button btnAddGol, btnAddAsistencia, btnAddAmarilla, btnAddRoja;
+
+    private ArrayList<String> equipos = new ArrayList<>();
+    private ArrayList<String> jugadores = new ArrayList<>();
+
+    private ArrayList<String> goles = new ArrayList<>();
+    private ArrayList<String> asistencias = new ArrayList<>();
+    private ArrayList<String> amarillas = new ArrayList<>();
+    private ArrayList<String> rojas = new ArrayList<>();
 
     private String idLiga;
 
@@ -28,128 +34,109 @@ public class PartidosActivity extends MenuActivity {
 
         spinnerLocal = findViewById(R.id.spinnerLocal);
         spinnerVisitante = findViewById(R.id.spinnerVisitante);
+        spinnerJugador = findViewById(R.id.spinnerJugador);
+
         etGolesLocal = findViewById(R.id.etGolesLocal);
         etGolesVisitante = findViewById(R.id.etGolesVisitante);
 
-        etGoleador = findViewById(R.id.etGoleador);
-        etAsistente = findViewById(R.id.etAsistente);
-        etAmarilla = findViewById(R.id.etAmarilla);
-        etRoja = findViewById(R.id.etRoja);
-
         btnGuardarPartido = findViewById(R.id.btnGuardarPartido);
-        listPartidos = findViewById(R.id.listPartidos);
 
-        equipos = new ArrayList<>();
-        partidos = new ArrayList<>();
-
-        adapterEquipos = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, equipos);
-        adapterEquipos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinnerLocal.setAdapter(adapterEquipos);
-        spinnerVisitante.setAdapter(adapterEquipos);
-
-        adapterPartidos = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, partidos);
-
-        listPartidos.setAdapter(adapterPartidos);
+        btnAddGol = findViewById(R.id.btnAddGol);
+        btnAddAsistencia = findViewById(R.id.btnAddAsistencia);
+        btnAddAmarilla = findViewById(R.id.btnAddAmarilla);
+        btnAddRoja = findViewById(R.id.btnAddRoja);
 
         idLiga = getIntent().getStringExtra("idLiga");
 
-        // ✅ CARGAR EQUIPOS
-        FirebaseDatabase.getInstance()
+        cargarDatos();
+
+        btnAddGol.setOnClickListener(v -> agregarEvento(goles, "Gol"));
+        btnAddAsistencia.setOnClickListener(v -> agregarEvento(asistencias, "Asistencia"));
+        btnAddAmarilla.setOnClickListener(v -> agregarEvento(amarillas, "Amarilla"));
+        btnAddRoja.setOnClickListener(v -> agregarEvento(rojas, "Roja"));
+
+        btnGuardarPartido.setOnClickListener(v -> guardarPartido());
+    }
+
+    private void agregarEvento(ArrayList<String> lista, String tipo) {
+        String jugador = spinnerJugador.getSelectedItem().toString();
+
+        if (jugador.equals("Selecciona jugador")) {
+            Toast.makeText(this, "Selecciona un jugador", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        lista.add(jugador);
+        Toast.makeText(this, tipo + " añadido: " + jugador, Toast.LENGTH_SHORT).show();
+    }
+
+    private void guardarPartido() {
+
+        String local = spinnerLocal.getSelectedItem().toString();
+        String visitante = spinnerVisitante.getSelectedItem().toString();
+
+        String golesL = etGolesLocal.getText().toString();
+        String golesV = etGolesVisitante.getText().toString();
+
+        String id = FirebaseDatabase.getInstance()
                 .getReference("ligas")
                 .child(idLiga)
-                .child("equipos")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
+                .child("partidos")
+                .push().getKey();
 
-                        equipos.clear();
+        HashMap<String, Object> partido = new HashMap<>();
+        partido.put("equipoLocal", local);
+        partido.put("equipoVisitante", visitante);
+        partido.put("golesLocal", golesL);
+        partido.put("golesVisitante", golesV);
 
-                        for (DataSnapshot data : snapshot.getChildren()) {
-                            String nombre = data.child("nombre").getValue(String.class);
-                            equipos.add(nombre);
-                        }
+        partido.put("goles", goles);
+        partido.put("asistencias", asistencias);
+        partido.put("amarillas", amarillas);
+        partido.put("rojas", rojas);
+        partido.put("jornada", "1");
 
-                        adapterEquipos.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {}
-                });
-
-        // ✅ GUARDAR PARTIDO COMPLETO
-        btnGuardarPartido.setOnClickListener(v -> {
-
-            String local = spinnerLocal.getSelectedItem().toString();
-            String visitante = spinnerVisitante.getSelectedItem().toString();
-            String golesL = etGolesLocal.getText().toString();
-            String golesV = etGolesVisitante.getText().toString();
-
-            String goleador = etGoleador.getText().toString();
-            String asistente = etAsistente.getText().toString();
-            String amarilla = etAmarilla.getText().toString();
-            String roja = etRoja.getText().toString();
-
-            if (golesL.isEmpty() || golesV.isEmpty()) {
-                Toast.makeText(this, "Introduce goles", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            String id = FirebaseDatabase.getInstance()
-                    .getReference("ligas")
-                    .child(idLiga)
-                    .child("partidos")
-                    .push().getKey();
-
-            HashMap<String, Object> partido = new HashMap<>();
-            partido.put("equipoLocal", local);
-            partido.put("equipoVisitante", visitante);
-            partido.put("golesLocal", golesL);
-            partido.put("golesVisitante", golesV);
-
-            // 🔥 ESTADÍSTICAS
-            partido.put("goleador", goleador);
-            partido.put("asistente", asistente);
-            partido.put("amarilla", amarilla);
-            partido.put("roja", roja);
-
-            FirebaseDatabase.getInstance()
-                    .getReference("ligas")
-                    .child(idLiga)
-                    .child("partidos")
-                    .child(id)
-                    .setValue(partido);
-
-            Toast.makeText(this, "Partido guardado", Toast.LENGTH_SHORT).show();
-        });
-
-        // ✅ CARGAR PARTIDOS
         FirebaseDatabase.getInstance()
                 .getReference("ligas")
                 .child(idLiga)
                 .child("partidos")
-                .addValueEventListener(new ValueEventListener() {
+                .child(id)
+                .setValue(partido);
+
+        Toast.makeText(this, "Partido guardado", Toast.LENGTH_SHORT).show();
+    }
+
+    private void cargarDatos() {
+
+        FirebaseDatabase.getInstance()
+                .getReference("ligas")
+                .child(idLiga)
+                .child("equipos")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
-                        partidos.clear();
+                        jugadores.add("Selecciona jugador");
 
-                        for (DataSnapshot data : snapshot.getChildren()) {
+                        for (DataSnapshot eq : snapshot.getChildren()) {
 
-                            String l = data.child("equipoLocal").getValue(String.class);
-                            String v = data.child("equipoVisitante").getValue(String.class);
-                            String gl = data.child("golesLocal").getValue(String.class);
-                            String gv = data.child("golesVisitante").getValue(String.class);
+                            String nombreEq = eq.child("nombre").getValue(String.class);
+                            equipos.add(nombreEq);
 
-                            String goleador = data.child("goleador").getValue(String.class);
-
-                            partidos.add(l + " " + gl + "-" + gv + " " + v +
-                                    " | Gol: " + goleador);
+                            for (DataSnapshot jug : eq.child("jugadores").getChildren()) {
+                                String nombreJug = jug.child("nombre").getValue(String.class);
+                                jugadores.add(nombreJug);
+                            }
                         }
 
-                        adapterPartidos.notifyDataSetChanged();
+                        spinnerLocal.setAdapter(new ArrayAdapter<>(PartidosActivity.this,
+                                android.R.layout.simple_spinner_item, equipos));
+
+                        spinnerVisitante.setAdapter(new ArrayAdapter<>(PartidosActivity.this,
+                                android.R.layout.simple_spinner_item, equipos));
+
+                        spinnerJugador.setAdapter(new ArrayAdapter<>(PartidosActivity.this,
+                                android.R.layout.simple_spinner_item, jugadores));
                     }
 
                     @Override

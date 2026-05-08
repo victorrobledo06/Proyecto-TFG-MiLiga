@@ -16,12 +16,14 @@ public class MainMenuActivity extends MenuActivity {
         btnGestionarLigas = findViewById(R.id.btnGestionarLigas);
         btnVerLigas = findViewById(R.id.btnVerLigas);
 
-        // Crear ligas
-        btnGestionarLigas.setOnClickListener(v ->
-                startActivity(new Intent(this, GestionarActivity.class)));
+        if (btnGestionarLigas != null) {
+            btnGestionarLigas.setOnClickListener(v ->
+                    startActivity(new Intent(this, GestionarActivity.class)));
+        }
 
-        // Ver ligas
-        btnVerLigas.setOnClickListener(v ->
-                startActivity(new Intent(this, LigasActivity.class)));
+        if (btnVerLigas != null) {
+            btnVerLigas.setOnClickListener(v ->
+                    startActivity(new Intent(this, LigasActivity.class)));
+        }
     }
 }

@@ -29,12 +29,39 @@
         android:background="@drawable/btn_green"
         android:textColor="@color/backgroundWhite"/>
 
-    <!-- ✅ BOTÓN NUEVO -->
     <Button
         android:id="@+id/btnIrPartidos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Gestionar Partidos"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/btn_green"
+        android:textColor="@color/backgroundWhite"/>
+
+    <!-- ✅ NUEVO BOTÓN -->
+    <Button
+        android:id="@+id/btnClasificacion"
+        android:text="Ver Clasificación"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/btn_green"
+        android:textColor="@color/backgroundWhite"/>
+
+    <Button
+        android:id="@+id/btnEstadisticas"
+        android:text="Ver Estadísticas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/btn_green"
+        android:textColor="@color/backgroundWhite"/>
+
+    <Button
+        android:id="@+id/btnResultados"
+        android:text="Ver Resultados"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/btn_green"
         android:textColor="@color/backgroundWhite"/>
