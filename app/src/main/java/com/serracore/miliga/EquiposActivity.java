@@ -7,7 +7,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class EquiposActivity extends BaseActivity {
+public class EquiposActivity extends MenuActivity {
+
 
     private ListView listEquipos;
     private Button btnAnadirLiga;
