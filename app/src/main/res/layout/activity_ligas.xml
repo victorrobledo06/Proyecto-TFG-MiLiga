@@ -15,14 +15,6 @@
         android:layout_height="wrap_content"/>
 
     <!-- ✅ BOTÓN NUEVO -->
-    <Button
-        android:id="@+id/btnVerPartidos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ver Partidos de la Liga Seleccionada"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/btn_green"
-        android:textColor="@color/backgroundWhite"/>
 
     <ListView
         android:id="@+id/listLigas"

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class LigasActivity extends MenuActivity {
 
     private ListView listLigas;
-    private Button btnVerPartidos;
 
     private ArrayList<String> ligas;
     private ArrayList<String> ids;
@@ -28,7 +27,6 @@ public class LigasActivity extends MenuActivity {
         setContentView(R.layout.activity_ligas);
 
         listLigas = findViewById(R.id.listLigas);
-        btnVerPartidos = findViewById(R.id.btnVerPartidos);
 
         ligas = new ArrayList<>();
         ids = new ArrayList<>();
@@ -69,19 +67,6 @@ public class LigasActivity extends MenuActivity {
 
             Intent intent = new Intent(this, EquiposLigaActivity.class);
             intent.putExtra("idLiga", ids.get(position));
-            startActivity(intent);
-        });
-
-        // ✅ BOTÓN → PARTIDOS
-        btnVerPartidos.setOnClickListener(v -> {
-
-            if (selectedPosition == -1) {
-                Toast.makeText(this, "Selecciona una liga primero", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Intent intent = new Intent(this, PartidosActivity.class);
-            intent.putExtra("idLiga", ids.get(selectedPosition));
             startActivity(intent);
         });
     }
