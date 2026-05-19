@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class StartActivity extends MenuActivity {
+public class StartActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 

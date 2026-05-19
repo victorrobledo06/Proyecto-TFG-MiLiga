@@ -28,6 +28,9 @@ public class PartidosActivity extends MenuActivity {
     private String idLiga;
     private EditText etJornada;
 
+    private EditText etMinuto;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +53,23 @@ public class PartidosActivity extends MenuActivity {
 
         etJornada = findViewById(R.id.etJornada);
 
+        etMinuto = findViewById(R.id.etMinuto);
+
 
         idLiga = getIntent().getStringExtra("idLiga");
 
         cargarDatos();
 
         btnAddGol.setOnClickListener(v -> agregarEvento(goles, "⚽ Gol"));
-        btnAddAsistencia.setOnClickListener(v -> agregarEvento(asistencias, "🎯 Asistencia"));
+        btnAddAsistencia.setOnClickListener(v -> {
+
+            if (goles.isEmpty()) {
+                Toast.makeText(this, "Primero añade un gol", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            agregarEvento(asistencias, "🎯 Asistencia");
+        });
         btnAddAmarilla.setOnClickListener(v -> agregarEvento(amarillas, "🟨 Amarilla"));
         btnAddRoja.setOnClickListener(v -> agregarEvento(rojas, "🟥 Roja"));
 
@@ -64,17 +77,29 @@ public class PartidosActivity extends MenuActivity {
     }
 
     private void agregarEvento(ArrayList<String> lista, String tipo) {
+
         String jugador = spinnerJugador.getSelectedItem().toString();
+        String minuto = etMinuto.getText().toString();
 
         if (jugador.equals("Selecciona jugador")) {
             Toast.makeText(this, "Selecciona un jugador", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        lista.add(jugador);
-        Toast.makeText(this, tipo + " ✅ " + jugador, Toast.LENGTH_SHORT).show();
+        if (minuto.isEmpty()) {
+            Toast.makeText(this, "Introduce el minuto", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        String evento = jugador + " (" + minuto + "')";
+
+        lista.add(evento);
+
+        Toast.makeText(this, tipo + " ✅ " + evento, Toast.LENGTH_SHORT).show();
+
+        etMinuto.setText(""); // limpiar campo
     }
+
 
     private void guardarPartido() {
 

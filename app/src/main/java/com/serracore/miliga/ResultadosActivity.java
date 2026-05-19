@@ -1,5 +1,6 @@
 package com.serracore.miliga;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -18,10 +19,14 @@ public class ResultadosActivity extends MenuActivity {
 
     private String idLiga;
 
+    private ArrayList<String> idsPartidos = new ArrayList<>(); // ✅ ids reales
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resultados);
+
+        setTitle("Resultados - MiLiga");
 
         listResultados = findViewById(R.id.listResultados);
 
@@ -34,6 +39,19 @@ public class ResultadosActivity extends MenuActivity {
         idLiga = getIntent().getStringExtra("idLiga");
 
         cargarPartidos();
+
+        // ✅ CLICK PARA VER DETALLE
+        listResultados.setOnItemClickListener((parent, view, position, id) -> {
+
+            // ⚠️ Evitar clic en títulos o líneas vacías
+            if (position >= idsPartidos.size()) return;
+
+            Intent intent = new Intent(this, DetallePartidoActivity.class);
+            intent.putExtra("idLiga", idLiga);
+            intent.putExtra("idPartido", idsPartidos.get(position));
+
+            startActivity(intent);
+        });
     }
 
     private void cargarPartidos() {
@@ -47,18 +65,18 @@ public class ResultadosActivity extends MenuActivity {
                     public void onDataChange(DataSnapshot snapshot) {
 
                         lista.clear();
+                        idsPartidos.clear();
 
-                        // Agrupar por jornada
                         HashMap<String, ArrayList<String>> jornadas = new HashMap<>();
+                        HashMap<String, ArrayList<String>> jornadasIds = new HashMap<>();
 
                         for (DataSnapshot partido : snapshot.getChildren()) {
 
                             String jornada = partido.child("jornada").getValue(String.class);
 
-                            if (jornada == null) {
-                                jornada = "0";  // o "Sin jornada"
-                            }
+                            if (jornada == null) jornada = "0";
 
+                            String idPartido = partido.getKey();
 
                             String local = partido.child("equipoLocal").getValue(String.class);
                             String visitante = partido.child("equipoVisitante").getValue(String.class);
@@ -70,12 +88,14 @@ public class ResultadosActivity extends MenuActivity {
 
                             if (!jornadas.containsKey(jornada)) {
                                 jornadas.put(jornada, new ArrayList<>());
+                                jornadasIds.put(jornada, new ArrayList<>());
                             }
 
                             jornadas.get(jornada).add(texto);
+                            jornadasIds.get(jornada).add(idPartido);
                         }
 
-                        // Mostrar
+                        // ✅ Ordenar jornadas
                         ArrayList<String> ordenadas = new ArrayList<>(jornadas.keySet());
                         Collections.sort(ordenadas, (a, b) -> {
                             if (a == null) return 1;
@@ -83,16 +103,27 @@ public class ResultadosActivity extends MenuActivity {
                             return a.compareTo(b);
                         });
 
-
+                        // ✅ Construir lista final
                         for (String jornada : ordenadas) {
 
                             lista.add("📅 Jornada " + jornada);
+                            idsPartidos.add(""); // placeholder (no clicable)
 
-                            for (String partido : jornadas.get(jornada)) {
-                                lista.add(partido);
+                            ArrayList<String> listaPartidos = jornadas.get(jornada);
+                            ArrayList<String> listaIds = jornadasIds.get(jornada);
+
+                            for (int i = 0; i < listaPartidos.size(); i++) {
+
+                                lista.add(listaPartidos.get(i));
+                                idsPartidos.add(listaIds.get(i));
                             }
 
-                            lista.add(""); // espacio
+                            lista.add(""); // espacio visual
+                            idsPartidos.add(""); // placeholder
+                        }
+
+                        if (lista.isEmpty()) {
+                            lista.add("No hay resultados disponibles");
                         }
 
                         adapter.notifyDataSetChanged();

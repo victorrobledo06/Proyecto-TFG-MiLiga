@@ -69,5 +69,28 @@ public class LigasActivity extends MenuActivity {
             intent.putExtra("idLiga", ids.get(position));
             startActivity(intent);
         });
+
+        listLigas.setOnItemLongClickListener((parent, view, position, id) -> {
+
+            String idLiga = ids.get(position);
+
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Eliminar liga")
+                    .setMessage("¿Seguro que quieres eliminar esta liga?")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+
+                        FirebaseDatabase.getInstance()
+                                .getReference("ligas")
+                                .child(idLiga)
+                                .removeValue();
+
+                        Toast.makeText(this, "Liga eliminada", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+
+            return true;
+        });
+
     }
 }

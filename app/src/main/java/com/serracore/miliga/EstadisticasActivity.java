@@ -72,7 +72,15 @@ public class EstadisticasActivity extends MenuActivity {
 
         for (DataSnapshot item : partido.child(campo).getChildren()) {
 
-            String jugador = item.getValue(String.class);
+            String jugadorCompleto = item.getValue(String.class);
+
+// ✅ EXTRAER SOLO EL NOMBRE (SIN MINUTO)
+            String jugador = jugadorCompleto;
+
+            if (jugadorCompleto.contains("(")) {
+                jugador = jugadorCompleto.substring(0, jugadorCompleto.indexOf("(")).trim();
+            }
+
 
             map.put(jugador, map.getOrDefault(jugador, 0) + 1);
         }

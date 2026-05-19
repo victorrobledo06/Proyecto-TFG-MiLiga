@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends MenuActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsuario, etContrasena;
     private Button btnIniciarSesion;

@@ -57,6 +57,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <EditText
+            android:id="@+id/etMinuto"
+            android:hint="Minuto (ej: 23)"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"/>
+
+
         <!-- BOTONES EVENTOS -->
         <Button
             android:id="@+id/btnAddGol"

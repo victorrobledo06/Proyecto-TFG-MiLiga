@@ -19,6 +19,8 @@ public class JugadoresActivity extends MenuActivity {
     private ListView listJugadores;
 
     private ArrayList<String> jugadores;
+    private ArrayList<String> ids; // ✅ NUEVO
+
     private ArrayAdapter<String> adapter;
 
     private String idLiga, idEquipo;
@@ -28,6 +30,8 @@ public class JugadoresActivity extends MenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugadores);
 
+        setTitle("Jugadores - MiLiga");
+
         etNombre = findViewById(R.id.etNombreJugador);
         etPosicion = findViewById(R.id.etPosicion);
         etDorsal = findViewById(R.id.etDorsal);
@@ -35,16 +39,17 @@ public class JugadoresActivity extends MenuActivity {
         listJugadores = findViewById(R.id.listJugadores);
 
         jugadores = new ArrayList<>();
+        ids = new ArrayList<>(); // ✅ NUEVO
+
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, jugadores);
 
         listJugadores.setAdapter(adapter);
 
-        // Recibir IDs
         idLiga = getIntent().getStringExtra("idLiga");
         idEquipo = getIntent().getStringExtra("idEquipo");
 
-        // GUARDAR JUGADOR
+        // ✅ GUARDAR JUGADOR
         btnGuardarJugador.setOnClickListener(v -> {
 
             String nombre = etNombre.getText().toString().trim();
@@ -80,7 +85,7 @@ public class JugadoresActivity extends MenuActivity {
                     .setValue(jugador)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(this, "Jugador añadido", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "✅ Jugador añadido", Toast.LENGTH_SHORT).show();
                             etNombre.setText("");
                             etPosicion.setText("");
                             etDorsal.setText("");
@@ -90,7 +95,7 @@ public class JugadoresActivity extends MenuActivity {
                     });
         });
 
-        // CARGAR JUGADORES
+        // ✅ CARGAR JUGADORES
         FirebaseDatabase.getInstance()
                 .getReference("ligas")
                 .child(idLiga)
@@ -102,6 +107,7 @@ public class JugadoresActivity extends MenuActivity {
                     public void onDataChange(DataSnapshot snapshot) {
 
                         jugadores.clear();
+                        ids.clear(); // ✅ IMPORTANTE
 
                         for (DataSnapshot data : snapshot.getChildren()) {
 
@@ -110,15 +116,47 @@ public class JugadoresActivity extends MenuActivity {
                             String dorsal = data.child("dorsal").getValue(String.class);
 
                             jugadores.add(nombre + " - " + posicion + " (Nº " + dorsal + ")");
+                            ids.add(data.getKey()); // ✅ GUARDAR ID
+                        }
+
+                        if (jugadores.isEmpty()) {
+                            jugadores.add("No hay jugadores disponibles");
                         }
 
                         adapter.notifyDataSetChanged();
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError error) {
-
-                    }
+                    public void onCancelled(DatabaseError error) {}
                 });
+
+        // ✅ BORRAR JUGADOR (PULSACIÓN LARGA)
+        listJugadores.setOnItemLongClickListener((parent, view, position, id) -> {
+
+            if (ids.size() == 0) return true; // evitar error si lista vacía
+
+            String idJugador = ids.get(position);
+
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Eliminar jugador")
+                    .setMessage("¿Seguro que quieres eliminar este jugador?")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+
+                        FirebaseDatabase.getInstance()
+                                .getReference("ligas")
+                                .child(idLiga)
+                                .child("equipos")
+                                .child(idEquipo)
+                                .child("jugadores")
+                                .child(idJugador)
+                                .removeValue();
+
+                        Toast.makeText(this, "🗑️ Jugador eliminado", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+
+            return true;
+        });
     }
 }

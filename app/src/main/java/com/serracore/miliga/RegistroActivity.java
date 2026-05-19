@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class RegistroActivity extends MenuActivity {
+public class RegistroActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 

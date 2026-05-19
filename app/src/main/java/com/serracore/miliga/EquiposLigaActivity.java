@@ -117,6 +117,31 @@ public class EquiposLigaActivity extends MenuActivity {
             startActivity(intent);
         });
 
+        listEquipos.setOnItemLongClickListener((parent, view, position, id) -> {
+
+            String idEquipo = ids.get(position);
+
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Eliminar equipo")
+                    .setMessage("¿Seguro que quieres eliminar este equipo?")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+
+                        FirebaseDatabase.getInstance()
+                                .getReference("ligas")
+                                .child(idLiga)
+                                .child("equipos")
+                                .child(idEquipo)
+                                .removeValue();
+
+                        Toast.makeText(this, "Equipo eliminado", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+
+            return true;
+        });
+
+
         // ✅ BOTÓN → PARTIDOS DE ESTA LIGA
         btnIrPartidos.setOnClickListener(v -> {
 
