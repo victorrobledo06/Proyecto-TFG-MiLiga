@@ -65,6 +65,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"/>
 
+        <CheckBox
+            android:id="@+id/checkPenalti"
+            android:text="Gol de penalti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
 
         <!-- BOTONES EVENTOS -->
         <Button
