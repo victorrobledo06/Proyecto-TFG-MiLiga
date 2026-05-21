@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.*;
 
@@ -19,7 +20,7 @@ public class ResultadosActivity extends MenuActivity {
 
     private String idLiga;
 
-    private ArrayList<String> idsPartidos = new ArrayList<>(); // ✅ ids reales
+    private ArrayList<String> idsPartidos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +41,51 @@ public class ResultadosActivity extends MenuActivity {
 
         cargarPartidos();
 
-        // ✅ CLICK PARA VER DETALLE
+        // ✅ CLICK → VER DETALLE
         listResultados.setOnItemClickListener((parent, view, position, id) -> {
 
-            // ⚠️ Evitar clic en títulos o líneas vacías
             if (position >= idsPartidos.size()) return;
+
+            String idPartido = idsPartidos.get(position);
+
+            if (idPartido == null || idPartido.isEmpty()) return;
 
             Intent intent = new Intent(this, DetallePartidoActivity.class);
             intent.putExtra("idLiga", idLiga);
-            intent.putExtra("idPartido", idsPartidos.get(position));
+            intent.putExtra("idPartido", idPartido);
 
             startActivity(intent);
+        });
+
+        // ✅ PULSACIÓN LARGA → ELIMINAR
+        listResultados.setOnItemLongClickListener((parent, view, position, id) -> {
+
+            if (position >= idsPartidos.size()) return true;
+
+            String idPartido = idsPartidos.get(position);
+
+            if (idPartido == null || idPartido.isEmpty()) return true;
+
+            new android.app.AlertDialog.Builder(this)
+                    .setTitle("Eliminar partido")
+                    .setMessage("¿Seguro que quieres eliminar este partido?")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+
+                        FirebaseDatabase.getInstance()
+                                .getReference("ligas")
+                                .child(idLiga)
+                                .child("partidos")
+                                .child(idPartido)
+                                .removeValue();
+
+                        Toast.makeText(this,
+                                "🗑️ Partido eliminado",
+                                Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+
+            return true;
         });
     }
 
@@ -103,11 +138,11 @@ public class ResultadosActivity extends MenuActivity {
                             return a.compareTo(b);
                         });
 
-                        // ✅ Construir lista final
+                        // ✅ Construir lista
                         for (String jornada : ordenadas) {
 
                             lista.add("📅 Jornada " + jornada);
-                            idsPartidos.add(""); // placeholder (no clicable)
+                            idsPartidos.add(""); // no clicable
 
                             ArrayList<String> listaPartidos = jornadas.get(jornada);
                             ArrayList<String> listaIds = jornadasIds.get(jornada);
@@ -118,7 +153,7 @@ public class ResultadosActivity extends MenuActivity {
                                 idsPartidos.add(listaIds.get(i));
                             }
 
-                            lista.add(""); // espacio visual
+                            lista.add("");
                             idsPartidos.add(""); // placeholder
                         }
 

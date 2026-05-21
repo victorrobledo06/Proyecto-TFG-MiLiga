@@ -3,10 +3,10 @@ package com.serracore.miliga;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.*;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class LigasActivity extends MenuActivity {
 
         listLigas.setAdapter(adapter);
 
-        // ✅ CARGAR LIGAS
+        // ✅ CARGAR LIGAS CON CONTROL DE ROLES
         FirebaseDatabase.getInstance()
                 .getReference("ligas")
                 .addValueEventListener(new ValueEventListener() {
@@ -46,19 +46,36 @@ public class LigasActivity extends MenuActivity {
                         ligas.clear();
                         ids.clear();
 
+                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+                        boolean admin = esAdmin(email);
+
                         for (DataSnapshot data : snapshot.getChildren()) {
 
                             String nombre = data.child("nombre").getValue(String.class);
+                            String creador = data.child("creador").getValue(String.class);
 
-                            ligas.add(nombre);
-                            ids.add(data.getKey());
+                            if (admin) {
+                                // ✅ admin ve todas las ligas
+                                ligas.add(nombre);
+                                ids.add(data.getKey());
+                            } else {
+                                // ✅ usuario normal solo sus ligas
+                                if (creador != null && creador.equals(userId)) {
+                                    ligas.add(nombre);
+                                    ids.add(data.getKey());
+                                }
+                            }
                         }
 
                         adapter.notifyDataSetChanged();
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError error) {}
+                    public void onCancelled(DatabaseError error) {
+                        Toast.makeText(LigasActivity.this, "Error al cargar ligas", Toast.LENGTH_SHORT).show();
+                    }
                 });
 
         // ✅ CLICK → EQUIPOS
@@ -70,6 +87,7 @@ public class LigasActivity extends MenuActivity {
             startActivity(intent);
         });
 
+        // ✅ LONG CLICK → BORRAR LIGA
         listLigas.setOnItemLongClickListener((parent, view, position, id) -> {
 
             String idLiga = ids.get(position);
@@ -91,6 +109,11 @@ public class LigasActivity extends MenuActivity {
 
             return true;
         });
+    }
 
+    // ✅ FUNCIÓN PARA SABER SI ES ADMIN
+    private boolean esAdmin(String email) {
+        return email.equals("vrobledos01@gmail.com") ||
+                email.equals("jsierraf01@educarex.es");
     }
 }

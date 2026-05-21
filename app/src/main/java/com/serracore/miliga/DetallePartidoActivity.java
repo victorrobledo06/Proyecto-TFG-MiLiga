@@ -155,11 +155,12 @@ public class DetallePartidoActivity extends MenuActivity {
             String evento = item.getValue(String.class);
             if (evento == null) continue;
 
-            String nombre = evento;
-
-            // QUITAR MINUTO PARA IDENTIFICAR
-            if (evento.contains("(")) {
-                nombre = evento.substring(0, evento.indexOf("(")).trim();
+            // ✅ SOLUCIÓN ROBUSTA (FUNCIONA CON EMOJIS Y PENALTIS)
+            String nombre;
+            try {
+                nombre = evento.split("\\(")[0].trim();
+            } catch (Exception e) {
+                nombre = evento;
             }
 
             if (jugadoresEquipo.contains(nombre)) {
@@ -167,7 +168,7 @@ public class DetallePartidoActivity extends MenuActivity {
             }
         }
 
-        // ORDENAR POR MINUTO
+        // ✅ ORDENAR POR MINUTO
         eventosTemp.sort((a, b) -> {
             int minA = extraerMinuto(a);
             int minB = extraerMinuto(b);

@@ -6,8 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.firebase.auth.FirebaseAuth; // ✅ IMPORTANTE
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
@@ -26,6 +25,7 @@ public class GestionarActivity extends MenuActivity {
         btnGuardarLiga = findViewById(R.id.btnGuardarLiga);
         btnVerLigas = findViewById(R.id.btnVerLigas);
 
+        // ✅ GUARDAR LIGA CON CREADOR
         btnGuardarLiga.setOnClickListener(v -> {
 
             String nombre = etNombreLiga.getText().toString().trim();
@@ -36,10 +36,18 @@ public class GestionarActivity extends MenuActivity {
             }
 
             String id = FirebaseDatabase.getInstance()
-                    .getReference("ligas").push().getKey();
+                    .getReference("ligas")
+                    .push()
+                    .getKey();
+
+            // ✅ obtener usuario actual
+            String userId = FirebaseAuth.getInstance()
+                    .getCurrentUser()
+                    .getUid();
 
             HashMap<String, Object> liga = new HashMap<>();
             liga.put("nombre", nombre);
+            liga.put("creador", userId); // 🔥 CLAVE
 
             FirebaseDatabase.getInstance()
                     .getReference("ligas")
@@ -48,16 +56,22 @@ public class GestionarActivity extends MenuActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
 
-                            Toast.makeText(this, "Liga guardada", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this,
+                                    "✅ Liga guardada",
+                                    Toast.LENGTH_SHORT).show();
+
                             etNombreLiga.setText("");
 
                         } else {
-                            Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(this,
+                                    "Error al guardar",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
         });
 
-        // Botón para ver ligas
+        // ✅ IR A VER LIGAS
         btnVerLigas.setOnClickListener(v ->
                 startActivity(new Intent(this, LigasActivity.class)));
     }
