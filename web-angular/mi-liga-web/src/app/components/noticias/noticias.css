@@ -1,0 +1,142 @@
+.container {
+  margin-top: 50px;
+  padding: 0 40px 50px;
+}
+
+.titulo-seccion {
+  color: white;
+  margin-bottom: 40px;
+}
+
+.main-news-card {
+  margin-bottom: 30px;
+  display: flex;
+  background: #1e293b;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 1px solid #334155;
+}
+
+.card-imagen {
+  flex: 1;
+  background: #334155;
+  min-height: 200px;
+  max-height: 260px;
+  overflow: hidden;
+}
+
+.card-imagen img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-contenido {
+  flex: 1.5;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fecha {
+  color: #22c55e;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.card-contenido h2 {
+  color: white;
+  margin: 10px 0;
+}
+
+.card-contenido p {
+  color: #94a3b8;
+}
+
+.btn-leer {
+  width: fit-content;
+  margin-top: 20px;
+  background: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-leer:hover {
+  background: #22c55e;
+  color: white;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-box {
+  background: #1e293b;
+  border-radius: 16px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid #334155;
+}
+
+.modal-cerrar {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #334155;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal-cerrar:hover {
+  background: #ef4444;
+}
+
+.modal-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 16px 16px 0 0;
+  display: block;
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.modal-titulo {
+  color: white;
+  font-size: 1.5rem;
+  margin: 10px 0 20px;
+}
+
+.modal-texto {
+  color: #94a3b8;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}

@@ -1,0 +1,36 @@
+<div class="container">
+  <h1 class="titulo-seccion">Todas las Noticias</h1>
+  
+  <div class="news-list">
+    @for (n of noticias; track n.titulo) {
+      <div class="main-news-card">
+        <div class="card-imagen">
+          <img [src]="n.img" alt="Noticia">
+        </div>
+        <div class="card-contenido">
+          <span class="fecha">{{ n.fecha }}</span>
+          <h2>{{ n.titulo }}</h2>
+          <p>{{ n.desc }}</p>
+          <button class="btn-leer" (click)="abrirNoticia(n)">
+            Leer noticia completa
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+@if (noticiaAbierta()) {
+  <div class="modal-overlay" (click)="cerrarNoticia()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <button class="modal-cerrar" (click)="cerrarNoticia()">✕</button>
+      <img [src]="noticiaAbierta()!.img" class="modal-img" alt="Noticia">
+      <div class="modal-body">
+        <span class="fecha">{{ noticiaAbierta()!.fecha }}</span>
+        <h2 class="modal-titulo">{{ noticiaAbierta()!.titulo }}</h2>
+        <p class="modal-texto">{{ noticiaAbierta()!.desc }}</p>
+        <p class="modal-texto">{{ noticiaAbierta()!.contenido }}</p>
+      </div>
+    </div>
+  </div>
+}

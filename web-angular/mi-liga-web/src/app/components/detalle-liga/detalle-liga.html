@@ -1,104 +1,151 @@
 <div class="container">
+
   <div class="header-detalle">
     <button routerLink="/ligas" class="btn-back">← Volver</button>
-    <h2>Clasificación - Liga {{ ligaId() }}</h2>
+    <h2>{{ nombreLiga() }}</h2>
   </div>
 
-  <table class="tabla-clasificacion">
-    <thead>
-      <tr>
-        <th>Pos</th>
-        <th>Equipo</th>
-        <th>PJ</th>
-        <th>G</th>
-        <th>E</th>
-        <th>P</th>
-        <th>Pts</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (item of equipos; track item.id) {
+  <section class="seccion">
+    <h3 class="seccion-titulo">📊 Clasificación</h3>
+    <table class="tabla">
+      <thead>
         <tr>
-          <td><strong>{{ item.pos }}</strong></td>
-          <td class="team-name">
-            <a [routerLink]="['/equipo', item.id]" class="link-equipo">{{ item.nombre }}</a>
-          </td>
-          <td>{{ item.pj }}</td>
-          <td>{{ item.pg }}</td>
-          <td>{{ item.pe }}</td>
-          <td>{{ item.pp }}</td>
-          <td class="pts-col">{{ item.pts }}</td>
+          <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>Pts</th>
         </tr>
-      }
-    </tbody>
-  </table>
-
-  <div class="stats-container">
-    <div class="pichichi-section">
-      <h3>🏆 Máximos Goleadores</h3>
-      <div class="stats-table">
-        <div class="stats-header">
-          <span>Jugador</span>
-          <span>Goles</span>
-        </div>
-        @for (p of goleadores; track p.nombre) {
-          <div class="stats-row">
-            <span>{{ p.nombre }} <small>({{ p.equipo }})</small></span>
-            <span class="badge-count">{{ p.goles }}</span>
-          </div>
+      </thead>
+      <tbody>
+        @for (e of clasificacion(); track e.nombre; let i = $index) {
+          <tr [class.lider]="i === 0">
+            <td>{{ i + 1 }}</td>
+            <td class="team-name">{{ e.nombre }}</td>
+            <td>{{ e.pj }}</td><td>{{ e.pg }}</td><td>{{ e.pe }}</td><td>{{ e.pp }}</td>
+            <td>{{ e.gf }}</td><td>{{ e.gc }}</td>
+            <td class="pts">{{ e.pts }}</td>
+          </tr>
         }
-      </div>
-    </div>
+      </tbody>
+    </table>
+  </section>
 
-    <div class="asistentes-section">
-      <h3>👟 Máximos Asistentes</h3>
-      <div class="stats-table">
-        <div class="stats-header">
-          <span>Jugador</span>
-          <span>Asist.</span>
+  <section class="seccion">
+    <h3 class="seccion-titulo">⚽ Partidos</h3>
+    @for (grupo of partidosPorJornada(); track grupo.jornada) {
+      <div class="jornada-bloque">
+        <div class="jornada-header">
+          <span class="jornada-titulo">📅 Jornada {{ grupo.jornada }}</span>
         </div>
-        @for (a of asistentes; track a.nombre) {
-          <div class="stats-row">
-            <span>{{ a.nombre }} <small>({{ a.equipo }})</small></span>
-            <span class="badge-count assist">{{ a.asistencias }}</span>
-          </div>
-        }
-      </div>
-    </div>
-  </div>
-
-  <div class="resultados-section">
-    <h3>Próximos Partidos / Resultados</h3>
-    <div class="partidos-list">
-      @for (partido of ligaService.getPartidosPorLiga(getLigaIdNumber()); track partido.id) {
-        <div class="partido-card">
-          <span class="equipo">
-            <a [routerLink]="['/equipo', partido.localId]" class="link-equipo">{{ partido.local }}</a>
-          </span>
-          
-          <div class="marcador-container">
-            @if (authService.getUsuario()) {
-              <button class="btn-sm" (click)="cambiarGoles(partido.id, partido.golesLocal + 1, partido.golesVisitante)">+</button>
-            }
-
-            <div class="marcador" [routerLink]="['/partido', partido.id]" style="cursor: pointer;">
-              @if (partido.jugado) {
-                <span class="goles">{{ partido.golesLocal }} - {{ partido.golesVisitante }}</span>
-              } @else {
-                <span class="vs">VS</span>
-              }
+        @for (p of grupo.partidos; track p.id) {
+          <div class="partido-card">
+            <div class="partido-equipos">
+              <span class="equipo-nombre">{{ p.equipoLocal }}</span>
+              <span class="marcador">{{ p.golesLocal }} — {{ p.golesVisitante }}</span>
+              <span class="equipo-nombre">{{ p.equipoVisitante }}</span>
             </div>
 
-            @if (authService.getUsuario()) {
-              <button class="btn-sm" (click)="cambiarGoles(partido.id, partido.golesLocal, partido.golesVisitante + 1)">+</button>
-            }
-          </div>
+            <div class="partido-equipos-stats">
 
-          <span class="equipo">
-            <a [routerLink]="['/equipo', partido.visitanteId]" class="link-equipo">{{ partido.visitante }}</a>
-          </span>
+              <!-- EQUIPO LOCAL -->
+              <div class="equipo-stats">
+                @for (g of golesEquipo(p, true); track g) {
+                  <span class="detalle-item">⚽ {{ g }}</span>
+                }
+
+                @for (a of asistenciasEquipo(p, true); track a) {
+                  <span class="detalle-item">👟 {{ a }}</span>
+                }
+
+                @for (t of tarjetasEquipo(p.amarillas, p.equipoLocal); track t) {
+                  <span class="detalle-item">🟨 {{ t }}</span>
+                }
+                @for (t of tarjetasEquipo(p.rojas, p.equipoLocal); track t) {
+                  <span class="detalle-item">🟥 {{ t }}</span>
+                }
+              </div>
+
+              <!-- EQUIPO VISITANTE -->
+              <div class="equipo-stats derecha">
+                @for (g of golesEquipo(p, false); track g) {
+                  <span class="detalle-item">⚽ {{ g }}</span>
+                }
+
+                @for (a of asistenciasEquipo(p, false); track a) {
+                  <span class="detalle-item">👟 {{ a }}</span>
+                }
+
+                @for (t of tarjetasEquipo(p.amarillas, p.equipoVisitante); track t) {
+                  <span class="detalle-item">🟨 {{ t }}</span>
+                }
+                @for (t of tarjetasEquipo(p.rojas, p.equipoVisitante); track t) {
+                  <span class="detalle-item">🟥 {{ t }}</span>
+                }
+              </div>
+
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <div class="stats-grid">
+
+    <section class="seccion">
+      <h3 class="seccion-titulo">🏆 Goleadores</h3>
+      @for (j of goleadores(); track j.nombre; let i = $index) {
+        <div class="stat-row">
+          <span class="stat-pos">{{ i + 1 }}</span>
+          <span class="stat-nombre">{{ j.nombre }}</span>
+          <span class="badge-gol">{{ j.goles }} ⚽</span>
         </div>
       }
-    </div>
+    </section>
+
+    <section class="seccion">
+      <h3 class="seccion-titulo">👟 Asistentes</h3>
+      @for (j of asistentes(); track j.nombre; let i = $index) {
+        <div class="stat-row">
+          <span class="stat-pos">{{ i + 1 }}</span>
+          <span class="stat-nombre">{{ j.nombre }}</span>
+          <span class="badge-asist">{{ j.asistencias }} 👟</span>
+        </div>
+      }
+    </section>
+
+    <section class="seccion">
+      <h3 class="seccion-titulo">🟨 Tarjetas</h3>
+      @for (j of tarjetas(); track j.nombre) {
+        <div class="stat-row">
+          <span class="stat-nombre">{{ j.nombre }}</span>
+          @if (j.amarillas > 0) { <span class="badge-amarilla">{{ j.amarillas }} 🟨</span> }
+          @if (j.rojas > 0) { <span class="badge-roja">{{ j.rojas }} 🟥</span> }
+        </div>
+      }
+    </section>
+
   </div>
+
+  <section class="seccion">
+    <h3 class="seccion-titulo">👥 Equipos y Jugadores</h3>
+    @for (equipo of equipos(); track equipo.id) {
+      <div class="equipo-bloque">
+        <h4 class="equipo-titulo">{{ equipo.nombre }}</h4>
+        @if (equipo.jugadores.length > 0) {
+          <div class="jugadores-grid">
+            @for (j of equipo.jugadores; track j.nombre) {
+              <div class="jugador-card">
+                <span class="dorsal">{{ j.dorsal }}</span>
+                <div>
+                  <p class="jugador-nombre">{{ j.nombre }}</p>
+                  <p class="jugador-pos">{{ j.posicion }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="sin-jugadores">Sin jugadores registrados</p>
+        }
+      </div>
+    }
+  </section>
+
 </div>

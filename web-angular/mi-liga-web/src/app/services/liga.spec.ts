@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Liga } from './liga';
+import { LigaService } from './liga';
 
 describe('Liga', () => {
-  let service: Liga;
+  let service: LigaService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Liga);
+    service = TestBed.inject(LigaService);
   });
 
   it('should be created', () => {
