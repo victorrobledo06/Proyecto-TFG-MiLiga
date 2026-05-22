@@ -12,17 +12,23 @@ import com.google.firebase.database.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// Activity encargada de gestionar los jugadores de un equipo.
+// Permite añadir jugadores, mostrar la lista y eliminarlos.
 public class JugadoresActivity extends MenuActivity {
 
     private EditText etNombre, etPosicion, etDorsal;
     private Button btnGuardarJugador;
     private ListView listJugadores;
 
+    // Lista que contiene los datos que se muestran en pantalla
     private ArrayList<String> jugadores;
-    private ArrayList<String> ids; // ✅ NUEVO
+
+    // Lista que almacena los IDs reales de Firebase (necesarios para eliminar)
+    private ArrayList<String> ids;
 
     private ArrayAdapter<String> adapter;
 
+    // IDs necesarios para acceder a la base de datos
     private String idLiga, idEquipo;
 
     @Override
@@ -30,37 +36,44 @@ public class JugadoresActivity extends MenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jugadores);
 
+        // Título de la pantalla
         setTitle("Jugadores - MiLiga");
 
+        // Referencias a los elementos del layout
         etNombre = findViewById(R.id.etNombreJugador);
         etPosicion = findViewById(R.id.etPosicion);
         etDorsal = findViewById(R.id.etDorsal);
         btnGuardarJugador = findViewById(R.id.btnGuardarJugador);
         listJugadores = findViewById(R.id.listJugadores);
 
+        // Inicialización de listas
         jugadores = new ArrayList<>();
-        ids = new ArrayList<>(); // ✅ NUEVO
+        ids = new ArrayList<>();
 
+        // Adaptador para mostrar los jugadores en el ListView
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, jugadores);
 
         listJugadores.setAdapter(adapter);
 
+        // Obtener datos de la activity anterior
         idLiga = getIntent().getStringExtra("idLiga");
         idEquipo = getIntent().getStringExtra("idEquipo");
 
-        // ✅ GUARDAR JUGADOR
+        // GUARDAR JUGADOR
         btnGuardarJugador.setOnClickListener(v -> {
 
             String nombre = etNombre.getText().toString().trim();
             String posicion = etPosicion.getText().toString().trim();
             String dorsal = etDorsal.getText().toString().trim();
 
+            // Validación de que los campos no estén vacíos
             if (nombre.isEmpty() || posicion.isEmpty() || dorsal.isEmpty()) {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // Generar ID único para el jugador en Firebase
             String idJugador = FirebaseDatabase.getInstance()
                     .getReference("ligas")
                     .child(idLiga)
@@ -70,11 +83,13 @@ public class JugadoresActivity extends MenuActivity {
                     .push()
                     .getKey();
 
+            // Crear objeto con la información del jugador
             HashMap<String, Object> jugador = new HashMap<>();
             jugador.put("nombre", nombre);
             jugador.put("posicion", posicion);
             jugador.put("dorsal", dorsal);
 
+            // Guardar jugador en Firebase
             FirebaseDatabase.getInstance()
                     .getReference("ligas")
                     .child(idLiga)
@@ -85,17 +100,22 @@ public class JugadoresActivity extends MenuActivity {
                     .setValue(jugador)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+
+                            // Mensaje de éxito
                             Toast.makeText(this, "✅ Jugador añadido", Toast.LENGTH_SHORT).show();
+
+                            // Limpiar campos de texto
                             etNombre.setText("");
                             etPosicion.setText("");
                             etDorsal.setText("");
+
                         } else {
                             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
                         }
                     });
         });
 
-        // ✅ CARGAR JUGADORES
+        // CARGAR JUGADORES DESDE FIREBASE
         FirebaseDatabase.getInstance()
                 .getReference("ligas")
                 .child(idLiga)
@@ -103,22 +123,29 @@ public class JugadoresActivity extends MenuActivity {
                 .child(idEquipo)
                 .child("jugadores")
                 .addValueEventListener(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
+                        // Limpiar listas antes de cargar nuevos datos
                         jugadores.clear();
-                        ids.clear(); // ✅ IMPORTANTE
+                        ids.clear();
 
+                        // Recorrer todos los jugadores guardados
                         for (DataSnapshot data : snapshot.getChildren()) {
 
                             String nombre = data.child("nombre").getValue(String.class);
                             String posicion = data.child("posicion").getValue(String.class);
                             String dorsal = data.child("dorsal").getValue(String.class);
 
+                            // Formato del texto que se muestra en pantalla
                             jugadores.add(nombre + " - " + posicion + " (Nº " + dorsal + ")");
-                            ids.add(data.getKey()); // ✅ GUARDAR ID
+
+                            // Guardar ID para futuras operaciones (ej: eliminar)
+                            ids.add(data.getKey());
                         }
 
+                        // Si no hay jugadores, mostrar mensaje
                         if (jugadores.isEmpty()) {
                             jugadores.add("No hay jugadores disponibles");
                         }
@@ -130,10 +157,11 @@ public class JugadoresActivity extends MenuActivity {
                     public void onCancelled(DatabaseError error) {}
                 });
 
-        // ✅ BORRAR JUGADOR (PULSACIÓN LARGA)
+        // BORRAR JUGADOR (PULSACIÓN LARGA)
         listJugadores.setOnItemLongClickListener((parent, view, position, id) -> {
 
-            if (ids.size() == 0) return true; // evitar error si lista vacía
+            // Evitar errores si la lista está vacía
+            if (ids.size() == 0) return true;
 
             String idJugador = ids.get(position);
 
@@ -142,6 +170,7 @@ public class JugadoresActivity extends MenuActivity {
                     .setMessage("¿Seguro que quieres eliminar este jugador?")
                     .setPositiveButton("Sí", (dialog, which) -> {
 
+                        // Eliminar jugador de Firebase
                         FirebaseDatabase.getInstance()
                                 .getReference("ligas")
                                 .child(idLiga)

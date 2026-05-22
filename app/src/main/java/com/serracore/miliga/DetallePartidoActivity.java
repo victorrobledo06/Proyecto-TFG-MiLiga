@@ -9,6 +9,8 @@ import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 
+// Activity que muestra el detalle de un partido:
+// marcador + eventos (goles, asistencias, tarjetas)
 public class DetallePartidoActivity extends MenuActivity {
 
     private TextView tvTitulo;
@@ -24,21 +26,27 @@ public class DetallePartidoActivity extends MenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_partido);
 
+        // Referencias a los elementos de la interfaz
         tvTitulo = findViewById(R.id.tvTituloPartido);
         listEventos = findViewById(R.id.listEventos);
 
+        // Inicialización de la lista de eventos
         eventos = new ArrayList<>();
+
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, eventos);
 
         listEventos.setAdapter(adapter);
 
+        // Recibir datos de la activity anterior
         idLiga = getIntent().getStringExtra("idLiga");
         idPartido = getIntent().getStringExtra("idPartido");
 
+        // Cargar datos del partido desde Firebase
         cargarPartido();
     }
 
+    // Método que obtiene los datos del partido (equipos y resultado)
     private void cargarPartido() {
 
         FirebaseDatabase.getInstance()
@@ -51,14 +59,17 @@ public class DetallePartidoActivity extends MenuActivity {
                     @Override
                     public void onDataChange(DataSnapshot data) {
 
+                        // Obtener datos básicos del partido
                         String local = data.child("equipoLocal").getValue(String.class);
                         String visitante = data.child("equipoVisitante").getValue(String.class);
 
                         String gl = data.child("golesLocal").getValue(String.class);
                         String gv = data.child("golesVisitante").getValue(String.class);
 
+                        // Mostrar marcador en pantalla
                         tvTitulo.setText(local + " " + gl + " - " + gv + " " + visitante);
 
+                        // Cargar jugadores para poder separar eventos por equipo
                         cargarJugadoresPorEquipo(local, visitante, data);
                     }
 
@@ -67,6 +78,7 @@ public class DetallePartidoActivity extends MenuActivity {
                 });
     }
 
+    // Método que obtiene los jugadores de cada equipo desde Firebase
     private void cargarJugadoresPorEquipo(String local,
                                           String visitante,
                                           DataSnapshot partidoData) {
@@ -83,16 +95,19 @@ public class DetallePartidoActivity extends MenuActivity {
                         ArrayList<String> jugadoresLocal = new ArrayList<>();
                         ArrayList<String> jugadoresVisitante = new ArrayList<>();
 
+                        // Recorrer equipos de la liga
                         for (DataSnapshot eq : snapshot.getChildren()) {
 
                             String nombreEquipo = eq.child("nombre").getValue(String.class);
 
+                            // Si es equipo local → guardar sus jugadores
                             if (nombreEquipo.equals(local)) {
                                 for (DataSnapshot jug : eq.child("jugadores").getChildren()) {
                                     jugadoresLocal.add(jug.child("nombre").getValue(String.class));
                                 }
                             }
 
+                            // Si es equipo visitante → guardar sus jugadores
                             if (nombreEquipo.equals(visitante)) {
                                 for (DataSnapshot jug : eq.child("jugadores").getChildren()) {
                                     jugadoresVisitante.add(jug.child("nombre").getValue(String.class));
@@ -100,6 +115,7 @@ public class DetallePartidoActivity extends MenuActivity {
                             }
                         }
 
+                        // Mostrar los eventos separados por equipo
                         mostrarEventosSeparados(jugadoresLocal, jugadoresVisitante, local, visitante, partidoData);
                     }
 
@@ -108,6 +124,7 @@ public class DetallePartidoActivity extends MenuActivity {
                 });
     }
 
+    // Método que muestra los eventos del partido agrupados por equipo
     private void mostrarEventosSeparados(ArrayList<String> jugLocal,
                                          ArrayList<String> jugVisit,
                                          String local,
@@ -124,7 +141,7 @@ public class DetallePartidoActivity extends MenuActivity {
         añadirEventosOrdenados(data, "amarillas", "🟨 ", jugLocal);
         añadirEventosOrdenados(data, "rojas", "🟥 ", jugLocal);
 
-        eventos.add("");
+        eventos.add(""); // espacio visual
 
         // 🔴 EQUIPO VISITANTE
         eventos.add("🔴 " + visitante);
@@ -134,6 +151,7 @@ public class DetallePartidoActivity extends MenuActivity {
         añadirEventosOrdenados(data, "amarillas", "🟨 ", jugVisit);
         añadirEventosOrdenados(data, "rojas", "🟥 ", jugVisit);
 
+        // Si no hay eventos
         if (eventos.size() == 0) {
             eventos.add("No hay eventos en este partido");
         }
@@ -141,6 +159,7 @@ public class DetallePartidoActivity extends MenuActivity {
         adapter.notifyDataSetChanged();
     }
 
+    // Método que filtra y ordena eventos por minuto
     private void añadirEventosOrdenados(DataSnapshot data,
                                         String campo,
                                         String icono,
@@ -155,7 +174,7 @@ public class DetallePartidoActivity extends MenuActivity {
             String evento = item.getValue(String.class);
             if (evento == null) continue;
 
-            // ✅ SOLUCIÓN ROBUSTA (FUNCIONA CON EMOJIS Y PENALTIS)
+            // Extraer el nombre del jugador (ignorando minuto y emojis)
             String nombre;
             try {
                 nombre = evento.split("\\(")[0].trim();
@@ -163,12 +182,13 @@ public class DetallePartidoActivity extends MenuActivity {
                 nombre = evento;
             }
 
+            // Comprobar que el evento pertenece a este equipo
             if (jugadoresEquipo.contains(nombre)) {
                 eventosTemp.add(icono + evento);
             }
         }
 
-        // ✅ ORDENAR POR MINUTO
+        // Ordenar eventos por minuto
         eventosTemp.sort((a, b) -> {
             int minA = extraerMinuto(a);
             int minB = extraerMinuto(b);
@@ -178,6 +198,7 @@ public class DetallePartidoActivity extends MenuActivity {
         eventos.addAll(eventosTemp);
     }
 
+    // Método que extrae el minuto de un evento (ej: "Jugador (23')")
     private int extraerMinuto(String evento) {
 
         try {
